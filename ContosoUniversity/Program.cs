@@ -2,22 +2,23 @@ using ContosoUniversity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-internal class Program
+public class Program
 {
-    private static void Main(string[] args)
+    public static void Main(string[] args)
     {
+
         var builder = WebApplication.CreateBuilder(args);
-        CreateDbIfnotExists(Host);
 
         // Add services to the container.
-        builder.Services.AddRazorPages();
-
-        builder.Services.AddDbContext<SchoolContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext")));
-
+        builder.Services.AddControllersWithViews();
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+        builder.Services.AddDbContext<SchoolContext>(options => options
+        .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         var app = builder.Build();
+
+        CreateDbIfNotExists(app);
+
+
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
@@ -33,21 +34,23 @@ internal class Program
 
         app.UseAuthorization();
 
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+        app.MapControllerRoute
+            (name: "default",
+            pattern: "{controller=home}/{Action=Index}/{id?}"
+            );
+        app.Run();
 
-        app.Run(); 
     }
-    
-    private static void CreateDbIfnotExists(IHost host)
+
+    private static void CreateDbIfNotExists(IHost host)
     {
         using (var scope = host.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
             try
             {
-                var context = services.GetRequiredService<SchoolContext>();
+                var context = services.GetRequiredService<
+                    SchoolContext>();
                 DbInitializer.Initialize(context);
             }
             catch (Exception ex)
@@ -64,5 +67,4 @@ internal class Program
         {
             webBuilder.UseStartup<Program>();
         });
-
 }

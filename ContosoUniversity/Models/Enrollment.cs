@@ -1,4 +1,6 @@
-﻿namespace ContosoUniversity.Models
+﻿using ContosoUniversity.Models;
+
+namespace ContosoUniversity.Models
 {
 
     public enum Grade
@@ -13,5 +15,5 @@
         public int StudentID { get; set; }
         public Grade? Grade { get; set; }
         public Student Student { get; set; }
-}
+    }
 }
