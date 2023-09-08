@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace ContosoUniversityTARpe21.Controllers
+namespace ContosoUniversity.Controllers
 {
     public class StudentController : Controller
     {
