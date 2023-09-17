@@ -2,16 +2,14 @@
 using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
-using System.Security.Cryptography.X509Certificates;
 
 namespace ContosoUniversity.Controllers
 {
-    public class StudentController : Controller
+    public class StudentsController : Controller
     {
         private readonly SchoolContext _context;
 
-        public StudentController(SchoolContext context)
+        public StudentsController(SchoolContext context)
         {
             _context = context;
         }
@@ -19,9 +17,10 @@ namespace ContosoUniversity.Controllers
         {
             return View(await _context.Students.ToListAsync());
         }
+
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null) 
+            if (id == null)
             {
                 return NotFound();
             }
@@ -36,31 +35,32 @@ namespace ContosoUniversity.Controllers
             }
             return View(student);
         }
-        public IActionResult Create() 
+        public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> Create([Bind("EnrollmentDate,FirstMidName,LastName")]Student student)
+        public async Task<IActionResult> Create([Bind("EnrollmentDate,FirstMidName,LastName")] Student student)
         {
-            try 
-	        {	        
-		        if (ModelState.IsValid) 
+            try
+            {
+                if (ModelState.IsValid)
                 {
                     _context.Add(student);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-	        }
-	            catch (Exception)
-	        {
-                ModelState.AddModelError("", "Unable to save changes" + "Try again, and if the problem persissts" + "See your sys admin");
-	        }
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Unable to save changes. "
+                    + "Try again, and if the problem persist "
+                    + "see your system administrator.");
+            }
             return View(student);
-
         }
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,10 +82,10 @@ namespace ContosoUniversity.Controllers
             if (id == null)
             {
                 return NotFound();
-                
             }
             var studentToUpdate = await _context.Students.FirstOrDefaultAsync(s => s.ID == id);
-            if (await TryUpdateModelAsync<Student>(studentToUpdate, "", s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+            if (await TryUpdateModelAsync<Student>(studentToUpdate, "", s => s.FirstMidName,
+                s => s.LastName, s => s.EnrollmentDate))
             {
                 try
                 {
@@ -94,12 +94,14 @@ namespace ContosoUniversity.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    ModelState.AddModelError("", "Unable to save changes." + "Try again, and if the problem" + "see your system administartor");
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persist " +
+                        "see your system administrator.");
                 }
             }
             return View(studentToUpdate);
         }
-        public async Task<IActionResult> Delte(int? id, bool? saveChangesError = false)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
@@ -116,11 +118,32 @@ namespace ContosoUniversity.Controllers
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewData["ErrorMessage"] =
-                    "Unable to save changes." + "Try again, and if the problem" + "see your system administartor";
+                    "Deletion has failed, Please try again, and if the problem persists "
+                    + "see your system administrator.";
             }
             return View(student);
         }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            try
+            {
+                _context.Students.Remove(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
+
+        }
     }
 
-   
 }
