@@ -25,7 +25,7 @@ namespace ContosoUniversity.Controllers
                 return NotFound();
             }
             var student = await _context.Students
-                .Include(s => s.Enrollment)
+                .Include(s => s.Enrollments)
                 .ThenInclude(e => e.Course)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);

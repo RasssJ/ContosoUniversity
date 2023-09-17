@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ContosoUniversity.Models.Student>
+﻿@model IEnumerable<ContosoUniversity.Models.Instructor>
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -17,7 +18,7 @@
                 @Html.DisplayNameFor(model => model.FirstMidName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EnrollmentDate)
+                @Html.DisplayNameFor(model => model.HireDate)
             </th>
         </tr>
     </thead>
@@ -32,7 +33,7 @@
                     @Html.DisplayFor(modelItem => item.FirstMidName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                    @Html.DisplayFor(modelItem => item.HireDate)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
