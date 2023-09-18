@@ -27,12 +27,13 @@ namespace ContosoUniversity.Controllers
                 .ThenInclude(i => i.Course)
                 .ThenInclude(i => i.Enrollments)
                 .ThenInclude(i => i.Student)
-                .ThenInclude(i => i.CourseAssignments)
+                .Include(i => i.CourseAssignments)
                 .ThenInclude(i => i.Course)
                 .ThenInclude(i => i.Department)
                 .AsNoTracking()
                 .OrderBy(i => i.LastName)
                 .ToListAsync();
+                return View(vm);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -65,7 +66,7 @@ namespace ContosoUniversity.Controllers
             }
             catch (Exception)
             {
-                ModelState.AddModelError("", "Unable to save changes. " + "Try again, and if the problem");
+                ModelState.AddModelError("", "Unable to save changes. " + "Try again, and if the problem persist, contact the system administrator.");
             }
             return View(instructor);
 
@@ -104,7 +105,7 @@ namespace ContosoUniversity.Controllers
                 catch (DbUpdateException)
                 {
                     ModelState.AddModelError("", "Unable to save changes" + "Try again, and if the problem persist." +
-                        "saw your administrator");
+                        "see your administrator");
                 }
             }
             return View(instructorToUpdate);
