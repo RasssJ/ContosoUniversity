@@ -1,4 +1,6 @@
-﻿namespace ContosoUniversity.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ContosoUniversity.Models
 {
     public class Student
     {
@@ -7,7 +9,13 @@
         public string FirstMidName { get; set; }
         public DateTime EnrollmentDate { get; set; }
 
+        [Display(Name = "Full Name")]
+        public string FullName
+        {
+            get
+            { return LastName + ", " + FirstMidName; }
+        }
         public ICollection<Enrollment> Enrollments { get; set; }
-        public object CourseAssignments { get; internal set; }
+
     }
 }
