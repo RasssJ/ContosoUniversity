@@ -1,39 +1,38 @@
 ﻿@model ContosoUniversity.Models.Instructor
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>DELETE</h1>
 <p class="text-danger">@ViewData["ErrorMessage"]</p>
-<h3>Are you sure you want to eviscerate this student out of existence?</h3>
+<h3>Are you sure you want to eviscerate this Instructor out of existence?</h3>
 <div>
-    <h4>Student</h4>
+    <h4>Instructor</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dt class="col-sm-2">
+        <dt class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dt>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstMidName)
         </dt>
-        <dt class="col-sm-2">
+        <dt class="col-sm-10">
             @Html.DisplayFor(model => model.FirstMidName)
         </dt>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.HireDate)
         </dt>
-        <dt class="col-sm-2">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.HireDate)
-        </dt>
+        </dd>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="ID" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index">Back to List</a>
+        </form>
     </dl>
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
-        <a asp-action="Index">Back to List</a>
-    </form>
 </div>
