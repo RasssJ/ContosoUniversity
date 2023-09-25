@@ -1,0 +1,76 @@
+﻿@model ContosoUniversity.Models.Department
+@{
+    ViewData["Title"] = "Create";
+}
+<h2>Create</h2>
+<h4>Department</h4>
+<hr />
+<div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label" />
+                        <label asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Budget" class="control-label" />
+                    <label asp-for="Budget" class="form-control" />
+                    <span asp-validation-for="Budget" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="StartDate" class="control-label" />
+                    <label asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="InstructorID" class="control-label" />
+                    <label asp-for="InstructorID" class="form-control" />
+                    <span asp-validation-for="InstructorID" class="text-danger"></span>
+                </div>
+
+                <div class="form-control">
+                    <div class="col-md-offset-2 col-md-10">
+                        <table>
+                            <tr>
+                                @{
+                                    int cnt = 0;
+                                    List<ContosoUniversity.Models.AssignedCourseData> courses =
+                                    ViewBag.Course;
+
+                                    foreach (var course in courses)
+                                    {
+                                        if (cnt++ % 3 == 0)
+                                        {
+                                            @:</tr><tr>
+                                        }
+                                        @:<td>
+                                        <input type="checkbox"
+                                        name="selectedCourses"
+                                        value="@course.CourseID"
+                                        @(Html.Raw(course.Assigned ? "checked=\"checked\"":""))
+                                        />
+                                        @course.CourseID @: @course.Title
+                                        @:</td>
+                                    }
+                                }
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </form>
+
+        </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
