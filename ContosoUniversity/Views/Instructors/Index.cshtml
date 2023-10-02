@@ -2,29 +2,20 @@
 @{
     ViewData["Title"] = "Courses";
 }
-
 <h2>Instructors</h2>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                LastName
-            </th>
-            <th>
-                First Name
-            </th>
-            <th>
-                Hire Date
-            </th>
-            <th>
-                Office
-            </th>
-            <th>
-                Courses
-            </th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Hire Date</th>
+            <th>Office</th>
+            <th>Courses</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -48,63 +39,62 @@
                 <td>
                     @if (item.OfficeAssignment != null)
                     {
-                     @item.OfficeAssignment.Location   
+                        @item.OfficeAssignment.Location
                     }
                 </td>
                 <td>
                     @{
-                        foreach (var course in item.CourseAssignments)
+                        foreach (var courses in item.CourseAssignments)
                         {
-                            @course.Course.CourseID @: @course.Course.Title <br />
+                            @courses.Course.CourseID @: @courses.Course.Title <br />
                         }
                     }
                 </td>
                 <td>
-                    
-                    <a asp-action="Edit" asp-for="@item.ID">Edit</a>|
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>| 
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                    
+                    <a asp-action="Index" asp-route-id="@item.ID">Index</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> | 
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a> 
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-@if (Model.Course != null)
+@if(Model.Course!=null)
 {
     <h3>Courses taught by the selected instructor:</h3>
     <table class="table">
-    <tr>
-        <th></th>
-        <th>Number</th>
-        <th>Title</th>
-        <th>Department</th>
-    </tr>
-    @foreach (var item in Model.Course)
-    {
-        string selectedRow = "";
-        if (item.CourseID == (int?)ViewData["CourseID"])
-        {
-            selectedRow = "table-success";
-        }
-        <tr class="@selectedRow">
-            <td>
-                @Html.ActionLink("Select", "Index", new{courseID = item.CourseID})
-            </td>
-            <td>
-                @item.CourseID
-            </td>
-            <td>
-                @item.Department.Name
-            </td>
+        <tr>
+            <th></th>
+            <th>Number</th>
+            <th>Title</th>
+            <th>Department</th>
         </tr>
-    }
+        @foreach (var item in Model.Course)
+        {
+            string selectedRow = "";
+            if (item.CourseID == (int?)ViewData["CourseID"])
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.ActionLink("Select", "Index", new{courseID = item.CourseID})
+                </td>
+                <td>
+                    @item.CourseID
+                </td>
+                <td>
+                    @item.Department.Name
+                </td>
+            </tr>
+        }
     </table>
 }
-@if (Model.Enrollments != null)
+@if (Model.Enrollments != null) 
 {
-    <h3>Students enrolled in the selected courses:</h3>
+    <h3>Students enrolled in the selected course:</h3>
     <table class="table">
         <tr>Name</tr>
         <tr>Grade</tr>

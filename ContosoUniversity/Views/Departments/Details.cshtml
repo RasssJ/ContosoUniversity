@@ -1,5 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ContosoUniversity.Models.Department
 @{
+    ViewData["Title"] = "Details";
 }
+<h1>Details</h1>
+<div>
+    <h4>Department</h4>
+    <hr />
+    <dl class="row">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dt>
+            @Html.DisplayFor(model => model.Name)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Budget)
+        </dt>
+        <dt>
+            @Html.DisplayFor(model => model.Budget)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dt>
+            @Html.DisplayFor(model => model.StartDate)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Administrator)
+        </dt>
+        <dt>
+            @Html.DisplayFor(model => model.Administrator.FullName)
+        </dt>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.DepartmentID">Edit</a>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -50,8 +50,10 @@ namespace ContosoUniversity.Controllers
         //post create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DepartmentID,Name,Budget,StartDate,RowVersion,InstructorID")] Department department)
+        public async Task<IActionResult> Create([Bind("Name,Budget,StartDate,RowVersion,InstructorID")] Department department)
         {
+            ModelState.Remove("Courses");
+            ModelState.Remove("Administrator");
             if (ModelState.IsValid)
             {
                 _context.Add(department);
@@ -86,8 +88,11 @@ namespace ContosoUniversity.Controllers
         //post edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, byte[] rowVersion)
+        public async Task<IActionResult> Edit(int id, byte[] rowVersion)
         {
+            ModelState.Remove("Courses");
+            ModelState.Remove("Administrator");
+            ModelState.Remove("RowVersion");
             if (id == null)
             {
                 return NotFound();
@@ -108,7 +113,8 @@ namespace ContosoUniversity.Controllers
 
             _context.Entry(departmentToUpdate).Property("RowVersion").OriginalValue = rowVersion;
 
-            if (await TryUpdateModelAsync<Department>(departmentToUpdate, "", s => s.Name, s => s.StartDate, s => s.Budget, s => s.InstructorID))
+            var tryUpdate = await TryUpdateModelAsync<Department>(departmentToUpdate, "", s => s.Name, s => s.StartDate, s => s.Budget, s => s.InstructorID);
+            if (tryUpdate)
             {
                 try
                 {
