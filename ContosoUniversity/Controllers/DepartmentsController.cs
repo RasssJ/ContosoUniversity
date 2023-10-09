@@ -50,7 +50,7 @@ namespace ContosoUniversity.Controllers
         //post create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Budget,StartDate,RowVersion,InstructorID")] Department department)
+        public async Task<IActionResult> Create([Bind("DepartmentID,Name,Budget,StartDate,InstructorID")] Department department)
         {
             ModelState.Remove("Courses");
             ModelState.Remove("Administrator");
